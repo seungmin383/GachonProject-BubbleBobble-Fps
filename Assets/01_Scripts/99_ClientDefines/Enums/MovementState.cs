@@ -1,9 +1,11 @@
 using UnityEngine;
 
-public class MovementState
+namespace Asset.Script.Player
 {
-    enum MOVEMENTSTATE
+
+    public enum MOVEMENTSTATE
     {
         IDLE, NONE
     }
+
 }

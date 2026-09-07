@@ -1,30 +1,33 @@
-using UnityEngine;
 using Asset.Script.Player;
+using UnityEngine;
+using UnityEngine.LowLevel;
 
 namespace Asset.Script.Player
 {
 
     public class PlayerController : MonoBehaviour
     {
-        [SerializeField] private PlayerMovement     _movement;
-        [SerializeField] private PlayerLock         _lock;
-
+        private PlayerMovement     _movement;
+        private PlayerLook _look;
+        private PlayerInputReader _inputReader;
 
         private void Awake()
         {
             _movement   = GetComponent<PlayerMovement>();
-            _lock       = GetComponent<PlayerLock>();
-        }
+            _look = GetComponent<PlayerLook>();
 
-        private void Start()
-        {
-        
+            _inputReader = GetComponent<PlayerInputReader>();
         }
-
 
         private void Update()
         {
-        
+            if(_inputReader.PressedJump)
+            {
+                _movement.Jump();
+            }
+
+            _movement.Movement(_inputReader.CurrentInput);
+            _look.Look(_inputReader.CurrentLook);
         }
     }
 }
