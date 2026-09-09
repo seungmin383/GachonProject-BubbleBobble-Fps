@@ -21,6 +21,11 @@ namespace Asset.Script.Player
 
         private void Update()
         {
+            if (Time.timeScale < 1.0f)
+            {
+                return; 
+            }
+
             if(_inputReader.PressedJump)
             {
                 _movement.Jump();

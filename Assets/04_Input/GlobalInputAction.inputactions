@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "GlobalInputAction",
+    "maps": [
+        {
+            "name": "UI",
+            "id": "2839739f-9687-4359-81ce-34e4813d2029",
+            "actions": [
+                {
+                    "name": "Pause",
+                    "type": "Button",
+                    "id": "35defdff-815f-42fa-9b83-3450b5361430",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "e375e399-c2de-4fda-8629-874927c77290",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Pause",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
