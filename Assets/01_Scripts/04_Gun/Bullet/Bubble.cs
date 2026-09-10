@@ -14,6 +14,13 @@ public class Bubble : MonoBehaviour
         Move();
         UpdateLifeTime();
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.TryGetComponent<BasicMonster>(out BasicMonster basicMonster))
+        {
+            Debug.Log("Enemy Hit");
+        }
+    }
 
     private void Move()
     {
