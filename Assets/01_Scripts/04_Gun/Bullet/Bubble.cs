@@ -1,6 +1,7 @@
 using UnityEngine;
 using Asset.Script.Monster;
 using Unity.VisualScripting;
+using Asset.Script.Interfaces;
 
 namespace Asset.Script.Weapon
 {
@@ -12,19 +13,28 @@ namespace Asset.Script.Weapon
         private float _lifeTime = 5.0f;
 
         private float _elapsedTime;
-        private BasicMonster _monster;
+
+        private ICapturable _capturable;
 
         void Update()
         {
             Move();
             UpdateLifeTime();
         }
+
         private void OnTriggerEnter(Collider other)
         {
-            if (other.TryGetComponent<BasicMonster>(out BasicMonster basicMonster))
+            if (other.TryGetComponent<ICapturable>(out ICapturable captured))
             {
-                basicMonster.Capture(gameObject);
-                _monster = basicMonster;
+                if(_capturable != null)
+                {
+                    return;
+                }
+
+                if(captured.TryCapture(this))
+                {
+                    _capturable = captured;
+                }
             }
         }
 
@@ -40,11 +50,12 @@ namespace Asset.Script.Weapon
             if(_elapsedTime > _lifeTime )
             {
                 _elapsedTime = 0;
-                if( _monster != null )
-                {
-                    _monster.Chain();
-                }
 
+                // 몬스터가 먼저 파괴됐지만 인터페이스 참조가 남은 경우는 확인 불가
+                _capturable?.OnBubbleBurst();
+                _capturable = null;
+
+                // 추후 Pool 에 넣는 식으로 변경 예정
                 Destroy(gameObject);
             }
         }

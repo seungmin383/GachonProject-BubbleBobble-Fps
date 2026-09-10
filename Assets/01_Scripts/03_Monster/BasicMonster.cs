@@ -1,15 +1,49 @@
+using Asset.Script.Interfaces;
+using Asset.Script.Weapon;
 using UnityEngine;
 
 namespace Asset.Script.Monster
 {
 
-    public class BasicMonster : MonoBehaviour
+    public class BasicMonster : MonoBehaviour, ICapturable
     {
-        private GameObject _bubble;
+        private Bubble _bubble;
+        private Rigidbody _rigidBody;
 
-        private void Update()
+        private void Awake()
         {
-            if( _bubble == null )
+            _rigidBody = GetComponent<Rigidbody>();
+        }
+
+        private void LateUpdate()
+        {
+            FollowBubble();
+        }
+
+        public bool TryCapture(Bubble bubble)
+        {
+            if( _bubble == null && bubble != null)
+            {
+                _bubble = bubble;
+                _rigidBody.isKinematic = true;
+
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        void ICapturable.OnBubbleBurst()
+        {
+            _bubble = null;
+            Die();
+        }
+
+        private void FollowBubble()
+        {
+            if (_bubble == null)
             {
                 return;
             }
@@ -17,13 +51,9 @@ namespace Asset.Script.Monster
             transform.position = _bubble.transform.position;
         }
 
-        public void Capture(GameObject bubble)
+        private void Die()
         {
-            _bubble = bubble;
-        }
-        public void Chain()
-        {
-            _bubble = null;
+            // 추후 Pool 에 넣는 식으로 변경 예정
             Destroy(gameObject);
         }
     }
