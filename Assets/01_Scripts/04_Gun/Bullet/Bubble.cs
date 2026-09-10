@@ -13,6 +13,7 @@ namespace Asset.Script.Weapon
         private float _lifeTime = 5.0f;
 
         private float _elapsedTime;
+        private bool _isBurst;
 
         private ICapturable _capturable;
 
@@ -26,7 +27,7 @@ namespace Asset.Script.Weapon
         {
             if (other.TryGetComponent<ICapturable>(out ICapturable captured))
             {
-                if(_capturable != null)
+                if(_capturable != null || _isBurst)
                 {
                     return;
                 }
@@ -47,17 +48,22 @@ namespace Asset.Script.Weapon
         {
             _elapsedTime += Time.deltaTime;
 
-            if(_elapsedTime > _lifeTime )
+            if (_elapsedTime > _lifeTime)
             {
-                _elapsedTime = 0;
-
-                // 몬스터가 먼저 파괴됐지만 인터페이스 참조가 남은 경우는 확인 불가
-                _capturable?.OnBubbleBurst();
-                _capturable = null;
-
-                // 추후 Pool 에 넣는 식으로 변경 예정
-                Destroy(gameObject);
+                Burst();
             }
+        }
+        public void Burst()
+        {
+            if (_isBurst)
+                return;
+
+            _isBurst = true;
+
+            _capturable?.OnBubbleBurst();
+            _capturable = null;
+
+            Destroy(gameObject);
         }
     }
 }

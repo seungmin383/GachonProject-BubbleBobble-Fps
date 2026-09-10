@@ -38,6 +38,11 @@ namespace Asset.Script.Player
         {
             _inputAction.Player.Disable();
         }
+
+        private void OnDestroy()
+        {
+            _inputAction?.Dispose();
+        }
     }
 
 }

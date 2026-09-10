@@ -49,13 +49,12 @@ namespace Asset.Script.Player
 
             /* 수직 이동 */
             _verticalVelocity -= _gravityForce * Time.deltaTime; 
-            Vector3 verticalMovement = Vector3.up * _verticalVelocity;
-            
             /* 땅에 있는가 확인 */
             if (_characterController.isGrounded && _verticalVelocity < 0.0f)
             {
                 _verticalVelocity = _downForce;
             }
+            Vector3 verticalMovement = Vector3.up * _verticalVelocity;
 
             /* 최종 이동 */
             Vector3 finalMovement = horizontalMovement + verticalMovement;

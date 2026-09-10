@@ -1,10 +1,11 @@
 using UnityEngine;
+using Asset.Script.Manager;
 
 namespace Asset.Script.Player
 {
     public class PlayerController : MonoBehaviour
     {
-        private PlayerMovement     _movement;
+        private PlayerMovement _movement;
         private PlayerLook _look;
         private BubbleAttack _bubbleAttack;
 
@@ -21,7 +22,7 @@ namespace Asset.Script.Player
 
         private void Update()
         {
-            if (Time.timeScale < 1.0f)
+            if (GameManager.Instance.IsPaused)
             {
                 return; 
             }
