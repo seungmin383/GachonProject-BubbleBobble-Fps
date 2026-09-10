@@ -8,14 +8,35 @@ namespace Asset.Script.UI
         [SerializeField]
         private GameObject _panel;
 
+        private GameManager _gameManager;
+
         private void Start()
         {
-            GameManager.Instance.PauseEvent += OnPauseChanged;
+            _gameManager = GameManager.Instance;
+            Subscribe();
+        }
+
+        private void OnEnable()
+        {
+            Subscribe();
         }
 
         private void OnDisable() 
         {
-            GameManager.Instance.PauseEvent -= OnPauseChanged;
+            if(null == _gameManager)
+            {
+                return;
+            }
+            _gameManager.PauseEvent -= OnPauseChanged;
+        }
+
+        private void Subscribe()
+        {
+            if (_gameManager == null)
+                return;
+
+            _gameManager.PauseEvent += OnPauseChanged;
+            OnPauseChanged(_gameManager.IsPaused);
         }
 
         private void OnPauseChanged(bool isPaused)

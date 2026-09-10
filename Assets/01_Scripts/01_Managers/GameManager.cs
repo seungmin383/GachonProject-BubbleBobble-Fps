@@ -8,7 +8,7 @@ namespace Asset.Script.Manager
         private bool _isPaused;
         public bool IsPaused => _isPaused;
 
-        public static GameManager Instance;
+        public static GameManager Instance { get; private set; }
 
         public event Action<bool> PauseEvent;
 
@@ -16,14 +16,18 @@ namespace Asset.Script.Manager
         {
             if (null != Instance && this != Instance)
             {
+                enabled = false;
                 Destroy(gameObject);
                 return;
             }
 
             Instance = this;
+            DontDestroyOnLoad(gameObject);
 
-            CursorManager.Lock();
             InputManager.Initialize();
+
+            // 나중에 로비 생기면 전투 진입시 Lock으로 변경
+            CursorManager.Lock();
         }
 
         private void Update()
@@ -63,7 +67,13 @@ namespace Asset.Script.Manager
 
         private void OnDestroy()
         {
+            if(this != Instance)
+            {
+                return;
+            }
+
             InputManager.Release();
+            Instance = null;
         }
     }
 }
