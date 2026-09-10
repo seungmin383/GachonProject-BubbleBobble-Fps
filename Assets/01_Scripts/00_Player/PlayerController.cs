@@ -1,10 +1,7 @@
-using Asset.Script.Player;
 using UnityEngine;
-using UnityEngine.LowLevel;
 
 namespace Asset.Script.Player
 {
-
     public class PlayerController : MonoBehaviour
     {
         private PlayerMovement     _movement;

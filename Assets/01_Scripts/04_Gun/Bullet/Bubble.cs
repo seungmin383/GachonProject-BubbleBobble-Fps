@@ -1,40 +1,52 @@
 using UnityEngine;
+using Asset.Script.Monster;
+using Unity.VisualScripting;
 
-public class Bubble : MonoBehaviour
+namespace Asset.Script.Weapon
 {
-    [SerializeField]
-    private float _speed = 10.0f;
-    [SerializeField]
-    private float _lifeTime = 5.0f;
-
-    private float _elapsedTime;
-
-    void Update()
+    public class Bubble : MonoBehaviour
     {
-        Move();
-        UpdateLifeTime();
-    }
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.TryGetComponent<BasicMonster>(out BasicMonster basicMonster))
+        [SerializeField]
+        private float _speed = 10.0f;
+        [SerializeField]
+        private float _lifeTime = 5.0f;
+
+        private float _elapsedTime;
+        private BasicMonster _monster;
+
+        void Update()
         {
-            Debug.Log("Enemy Hit");
+            Move();
+            UpdateLifeTime();
         }
-    }
-
-    private void Move()
-    {
-        transform.position += transform.forward * _speed * Time.deltaTime;
-    }
-
-    private void UpdateLifeTime()
-    {
-        _elapsedTime += Time.deltaTime;
-
-        if(_elapsedTime > _lifeTime )
+        private void OnTriggerEnter(Collider other)
         {
-            _elapsedTime = 0;
-            Destroy(gameObject);
+            if (other.TryGetComponent<BasicMonster>(out BasicMonster basicMonster))
+            {
+                basicMonster.Capture(gameObject);
+                _monster = basicMonster;
+            }
+        }
+
+        private void Move()
+        {
+            transform.position += transform.forward * _speed * Time.deltaTime;
+        }
+
+        private void UpdateLifeTime()
+        {
+            _elapsedTime += Time.deltaTime;
+
+            if(_elapsedTime > _lifeTime )
+            {
+                _elapsedTime = 0;
+                if( _monster != null )
+                {
+                    _monster.Chain();
+                }
+
+                Destroy(gameObject);
+            }
         }
     }
 }
