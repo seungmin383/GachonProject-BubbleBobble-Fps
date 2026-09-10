@@ -118,6 +118,24 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""LeftMouseInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b29c90a-7e21-4108-9699-a37d535dc64d"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RightMouseInput"",
+                    ""type"": ""Button"",
+                    ""id"": ""4813271d-948a-410c-ada5-ca6cd492a742"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -197,6 +215,28 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
                     ""action"": ""Look"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6cf85b71-a86f-4208-af9f-d117e9b6a2d1"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""LeftMouseInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""946c3fe8-d7d8-4b6f-a290-e8c769937781"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RightMouseInput"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -208,6 +248,8 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
+        m_Player_LeftMouseInput = m_Player.FindAction("LeftMouseInput", throwIfNotFound: true);
+        m_Player_RightMouseInput = m_Player.FindAction("RightMouseInput", throwIfNotFound: true);
     }
 
     ~@PlayerInputAction()
@@ -291,6 +333,8 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Move;
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Look;
+    private readonly InputAction m_Player_LeftMouseInput;
+    private readonly InputAction m_Player_RightMouseInput;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -314,6 +358,14 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Look".
         /// </summary>
         public InputAction @Look => m_Wrapper.m_Player_Look;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/LeftMouseInput".
+        /// </summary>
+        public InputAction @LeftMouseInput => m_Wrapper.m_Player_LeftMouseInput;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/RightMouseInput".
+        /// </summary>
+        public InputAction @RightMouseInput => m_Wrapper.m_Player_RightMouseInput;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -349,6 +401,12 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Look.started += instance.OnLook;
             @Look.performed += instance.OnLook;
             @Look.canceled += instance.OnLook;
+            @LeftMouseInput.started += instance.OnLeftMouseInput;
+            @LeftMouseInput.performed += instance.OnLeftMouseInput;
+            @LeftMouseInput.canceled += instance.OnLeftMouseInput;
+            @RightMouseInput.started += instance.OnRightMouseInput;
+            @RightMouseInput.performed += instance.OnRightMouseInput;
+            @RightMouseInput.canceled += instance.OnRightMouseInput;
         }
 
         /// <summary>
@@ -369,6 +427,12 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
             @Look.started -= instance.OnLook;
             @Look.performed -= instance.OnLook;
             @Look.canceled -= instance.OnLook;
+            @LeftMouseInput.started -= instance.OnLeftMouseInput;
+            @LeftMouseInput.performed -= instance.OnLeftMouseInput;
+            @LeftMouseInput.canceled -= instance.OnLeftMouseInput;
+            @RightMouseInput.started -= instance.OnRightMouseInput;
+            @RightMouseInput.performed -= instance.OnRightMouseInput;
+            @RightMouseInput.canceled -= instance.OnRightMouseInput;
         }
 
         /// <summary>
@@ -430,5 +494,19 @@ public partial class @PlayerInputAction: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnLook(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "LeftMouseInput" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnLeftMouseInput(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "RightMouseInput" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnRightMouseInput(InputAction.CallbackContext context);
     }
 }

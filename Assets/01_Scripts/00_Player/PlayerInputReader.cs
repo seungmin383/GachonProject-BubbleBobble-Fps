@@ -21,6 +21,8 @@ namespace Asset.Script.Player
            마우스 아래 이동   → (0, 음수)*/
         public Vector2 CurrentLook => _inputAction.Player.Look.ReadValue<Vector2>();
 
+        public bool LeftMouseInput => _inputAction.Player.LeftMouseInput.WasPressedThisFrame();
+        //public bool RightMouseInput => _inputAction.Player.RightMouseInput.WasPressedThisFrame();
 
         private void Awake()
         {
