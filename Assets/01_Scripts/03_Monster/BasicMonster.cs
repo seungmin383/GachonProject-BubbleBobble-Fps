@@ -22,7 +22,7 @@ namespace Asset.Script.Monster
         [SerializeField]
         private int _attackDamage = 1;
         [SerializeField]
-        private float _attackInterval = 1.0f;
+        private float _attackInterval = 5.0f;
 
         private float _attackElapsedTime;
 

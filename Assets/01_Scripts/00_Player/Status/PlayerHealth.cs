@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 namespace Asset.Script.Player
@@ -9,17 +10,27 @@ namespace Asset.Script.Player
 
         private int _currentHealth;
 
+        /// <summary>
+        /// Current Health, Max Health
+        /// </summary>
+        public event Action<int, int> HealthChanged;
+        public int CurrentHealth => _currentHealth;
+        public int MaxHealth => _maxHealth;
+
         private void Awake()
         {
             _currentHealth = _maxHealth;
         }
+
         private void Update()
         {
-            Debug.Log($"체력 {_currentHealth}");
+
         }
+
         public void TakeDamage(int damage)
         {
-            _currentHealth -= damage;
+            _currentHealth = Mathf.Clamp(_currentHealth -  damage, 0, _maxHealth);
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
 
             if (_currentHealth <= 0)
             {
@@ -29,7 +40,7 @@ namespace Asset.Script.Player
 
         private void Die()
         {
-
+            // 게임오버 추가
         }
     }
 

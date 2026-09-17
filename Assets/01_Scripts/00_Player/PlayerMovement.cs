@@ -1,7 +1,4 @@
 using UnityEngine;
-using Asset.Script.Player;
-using Asset.Script.ClientDefine;
-using Unity.VisualScripting.Dependencies.Sqlite;
 
 namespace Asset.Script.Player
 {
