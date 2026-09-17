@@ -1,60 +1,52 @@
+using Asset.Script.Component;
 using Asset.Script.Interfaces;
 using Asset.Script.Weapon;
+using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Asset.Script.Monster
 {
 
-    public class BasicMonster : MonoBehaviour, ICapturable
+    public class BasicMonster : MonsterBase
     {
-        private Bubble _bubble;
-        private Rigidbody _rigidBody;
+        [SerializeField]
+        private Capturable _capturable;
 
-        private void Awake()
+        private void OnEnable()
         {
-            _rigidBody = GetComponent<Rigidbody>();
+            _capturable.Captured += OnCaptured;
+            _capturable.BubbleBurst += OnBubbleBurst;
+        }
+        private void OnDisable()
+        {
+            _capturable.Captured -= OnCaptured;
+            _capturable.BubbleBurst -= OnBubbleBurst;
         }
 
-        private void LateUpdate()
+        protected override void Idle()
         {
-            FollowBubble();
+
+        }
+        protected override void Chase() 
+        {
+
+        }
+        protected override void Attack() 
+        {
+
+        }
+        protected override void Captured() 
+        {
+
         }
 
-        public bool TryCapture(Bubble bubble)
+        private void OnCaptured()
         {
-            if( _bubble == null && bubble != null)
-            {
-                _bubble = bubble;
-                _rigidBody.isKinematic = true;
-
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            _currentState = MonsterState.Captured;
         }
-
-        void ICapturable.OnBubbleBurst()
+        private void OnBubbleBurst()
         {
-            _bubble = null;
             Die();
-        }
-
-        private void FollowBubble()
-        {
-            if (_bubble == null)
-            {
-                return;
-            }
-
-            transform.position = _bubble.transform.position;
-        }
-
-        private void Die()
-        {
-            // 추후 Pool 에 넣는 식으로 변경 예정
-            Destroy(gameObject);
         }
     }
 }

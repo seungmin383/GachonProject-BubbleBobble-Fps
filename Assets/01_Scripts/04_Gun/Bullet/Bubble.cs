@@ -6,28 +6,26 @@ namespace Asset.Script.Weapon
     public class Bubble : MonoBehaviour
     {
         [SerializeField]
+        private float _lifeTime = 20.0f;
+        [SerializeField]
         private float _speed = 10.0f;
         [SerializeField]
         private float _floatingSpeed = 3.0f;
         [SerializeField]
-        private float _lifeTime = 20.0f;
-
-        [SerializeField]
         private float _timeToFloating = 3.0f;
-
-        private float _elapsedTime;
-        private bool _isBurst;
-        private BubbleState _currentState = BubbleState.Flying;
-        
         [SerializeField]
         private float _floatingTransitionTime = 1.0f;
 
+        private ICapturable _capturable;
+
+        private float _currentLifeTime;
+        private State _currentState = State.Flying;
         private Vector3 _moveDirection;
         private float _floatingElapsedTime;
 
-        private ICapturable _capturable;
+        private bool _isBurst;
 
-        private enum BubbleState
+        private enum State
         {
             Flying, Floating, Captured, Popping, Bursting
         }
@@ -55,7 +53,7 @@ namespace Asset.Script.Weapon
                 if(captured.TryCapture(this))
                 {
                     _capturable = captured;
-                    _currentState = BubbleState.Captured;
+                    _currentState = State.Captured;
                 }
             }
         }
@@ -77,14 +75,14 @@ namespace Asset.Script.Weapon
 
         private void UpdateState()
         {
-            _elapsedTime += Time.deltaTime;
+            _currentLifeTime += Time.deltaTime;
 
-            if(_elapsedTime > _timeToFloating && _currentState == BubbleState.Flying)
+            if(_currentLifeTime > _timeToFloating && _currentState == State.Flying)
             {
-                _currentState = BubbleState.Floating;
+                _currentState = State.Floating;
             }
 
-            if (_elapsedTime > _lifeTime)
+            if (_currentLifeTime > _lifeTime)
             {
                 Burst();
             }
@@ -96,7 +94,7 @@ namespace Asset.Script.Weapon
                 return;
 
             _isBurst = true;
-            _currentState = BubbleState.Bursting;
+            _currentState = State.Bursting;
 
             // 만약 버블이 무언가를 잡고있다면
             _capturable?.OnBubbleBurst();
@@ -109,22 +107,22 @@ namespace Asset.Script.Weapon
         {
             switch(_currentState)
             {
-                case BubbleState.Flying:
+                case State.Flying:
                     Move();
                     break;
 
-                case BubbleState.Floating:
+                case State.Floating:
                     MoveFloating();
                     break;
 
-                case BubbleState.Captured:
+                case State.Captured:
                     MoveFloating();
                     break;
 
-                case BubbleState.Popping:
+                case State.Popping:
                     break;
 
-                case BubbleState.Bursting:
+                case State.Bursting:
                     break;
 
             }
