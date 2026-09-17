@@ -155,6 +155,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BasicMonster
   _capturable: {fileID: -8685838561602809121}
+  _target: {fileID: 0}
+  _moveSpeed: 3
+  _attackRange: 10
 --- !u!114 &-8685838561602809121
 MonoBehaviour:
   m_ObjectHideFlags: 0

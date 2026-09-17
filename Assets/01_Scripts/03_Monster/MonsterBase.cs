@@ -9,7 +9,7 @@ public abstract class MonsterBase : MonoBehaviour
 
     protected MonsterState _currentState = MonsterState.Idle;
 
-    public virtual void Update()
+    protected virtual void Update()
     {
         AdaptState();
     }
