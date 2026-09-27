@@ -8,6 +8,7 @@ namespace Asset.Script.Player
         private PlayerMovement _movement;
         private PlayerLook _look;
         private BubbleAttack _bubbleAttack;
+        private GunAttack _gunAttack;
 
         private PlayerInputReader _inputReader;
 
@@ -18,6 +19,7 @@ namespace Asset.Script.Player
             _movement = GetComponent<PlayerMovement>();
             _look = GetComponent<PlayerLook>();
             _bubbleAttack = GetComponent<BubbleAttack>();
+            _gunAttack = GetComponent<GunAttack>();
         }
 
         private void Update()
@@ -35,6 +37,11 @@ namespace Asset.Script.Player
             if(_inputReader.LeftMouseInput)
             {
                 _bubbleAttack.Attack();
+            }
+
+            if (_inputReader.RightMouseInput)
+            {
+                _gunAttack.Attack();
             }
 
             _movement.Movement(_inputReader.CurrentInput);

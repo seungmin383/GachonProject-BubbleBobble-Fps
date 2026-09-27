@@ -22,7 +22,7 @@ namespace Asset.Script.Player
         public Vector2 CurrentLook => _inputAction.Player.Look.ReadValue<Vector2>();
 
         public bool LeftMouseInput => _inputAction.Player.LeftMouseInput.WasPressedThisFrame();
-        //public bool RightMouseInput => _inputAction.Player.RightMouseInput.WasPressedThisFrame();
+        public bool RightMouseInput => _inputAction.Player.RightMouseInput.WasPressedThisFrame();
 
         private void Awake()
         {
