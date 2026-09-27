@@ -1,16 +1,28 @@
 using System;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using Asset.Script.ClientDefine;
 
 namespace Asset.Script.Manager
 {
     public class GameManager : MonoBehaviour
     {
-        private bool _isPaused;
-        public bool IsPaused => _isPaused;
+        public enum GameState
+        {
+            WaitingForStart, Loading, Playing, WaitingForContinue, GameOver
+        }
 
         public static GameManager Instance { get; private set; }
 
         public event Action<bool> PauseEvent;
+
+        private bool _isPaused;
+        public bool IsPaused => _isPaused;
+
+        private GameState _currentState;
+        public GameState CurrentState => _currentState;
+
+        private int _currentCoin;
 
         private void Awake()
         {
@@ -22,27 +34,62 @@ namespace Asset.Script.Manager
             }
 
             Instance = this;
+            _currentState = GameState.WaitingForStart;
             DontDestroyOnLoad(gameObject);
 
             InputManager.Initialize();
-
-            // 나중에 로비 생기면 전투 진입시 Lock으로 변경
-            CursorManager.Lock();
         }
 
         private void Update()
         {
-            if(InputManager.PressedPause)
+            if(InputManager.PressedInsertCoin)
             {
-                if(_isPaused )
+                _currentCoin++;
+            }
+
+            if(InputManager.PressedGameStart)
+            {
+                if(_currentCoin > 0 && _currentState == GameState.WaitingForStart)
                 {
-                    Resume();
+                    ChangeState(GameState.Loading);
+                    SceneManager.LoadScene(SceneNames.Loading);
                 }
-                else
+            }   
+            
+            if(_currentState == GameState.Playing)
+            {
+                if(InputManager.PressedPause)
                 {
-                    Pause();
+                    if(_isPaused )
+                    {
+                        Resume();
+                    }
+                    else
+                    {
+                        Pause();
+                    }
                 }
             }
+        }
+
+        private void OnEnable()
+        {
+            SceneManager.sceneLoaded += OnSceneLoaded;
+        }
+
+        private void OnDisable()
+        {
+            SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+
+        private void ChangeState(GameState nextState)
+        {
+            if (_currentState == nextState)
+            {
+                return;
+            }
+
+            _currentState = nextState;
         }
 
         private void Pause()
@@ -63,6 +110,15 @@ namespace Asset.Script.Manager
             CursorManager.Lock();
 
             PauseEvent?.Invoke(false);
+        }
+
+        private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+        {
+            if (scene.name == SceneNames.Battle)
+            {
+                ChangeState(GameState.Playing);
+                CursorManager.Lock();
+            }
         }
 
         private void OnDestroy()

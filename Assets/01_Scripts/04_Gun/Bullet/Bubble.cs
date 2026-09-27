@@ -6,7 +6,9 @@ namespace Asset.Script.Weapon
     public class Bubble : MonoBehaviour
     {
         [SerializeField]
-        private float _lifeTime = 20.0f;
+        private float _lifeTime = 10.0f;
+        [SerializeField]
+        private float _angryLifeTime = 5.0f;
         [SerializeField]
         private float _speed = 10.0f;
         [SerializeField]
@@ -19,6 +21,8 @@ namespace Asset.Script.Weapon
         private ICapturable _capturable;
 
         private float _currentLifeTime;
+        private float _remainingTime;
+        public float RemainingTime => Mathf.Max(0.0f, _remainingTime);
         private State _currentState = State.Flying;
         private Vector3 _moveDirection;
         private float _floatingElapsedTime;
@@ -30,9 +34,10 @@ namespace Asset.Script.Weapon
             Flying, Floating, Captured, Popping, Bursting
         }
 
-        private void Start()
+        private void Awake()
         {
             _moveDirection = transform.forward;
+            _remainingTime = _lifeTime;
         }
 
         void Update()
@@ -54,6 +59,11 @@ namespace Asset.Script.Weapon
                 {
                     _capturable = captured;
                     _currentState = State.Captured;
+
+                    if(other.TryGetComponent<MonsterBase>(out var monster))
+                    {
+                        _remainingTime = monster.IsAngry ? _angryLifeTime : _lifeTime;
+                    }
                 }
             }
         }
@@ -77,18 +87,25 @@ namespace Asset.Script.Weapon
         {
             _currentLifeTime += Time.deltaTime;
 
+            _remainingTime -= Time.deltaTime;
+
+            /* Fly -> Floating */
             if(_currentLifeTime > _timeToFloating && _currentState == State.Flying)
             {
                 _currentState = State.Floating;
             }
 
-            if (_currentLifeTime > _lifeTime)
+            /* Expire */
+            if (_remainingTime <= 0.0f)
             {
-                Burst();
+                Finish(true);
             }
         }
 
-        public void Burst()
+        public void Burst() => Finish(false);
+        public void Expire() => Finish(true);
+
+        private void Finish(bool expired)
         {
             if (_isBurst)
                 return;
@@ -96,8 +113,15 @@ namespace Asset.Script.Weapon
             _isBurst = true;
             _currentState = State.Bursting;
 
-            // 만약 버블이 무언가를 잡고있다면
-            _capturable?.OnBubbleBurst();
+            if (expired)
+            {
+                _capturable?.Escape();
+            }
+            else
+            {
+                _capturable?.OnBubbleBurst();
+            }
+
             _capturable = null;
 
             Destroy(gameObject);
@@ -124,7 +148,6 @@ namespace Asset.Script.Weapon
 
                 case State.Bursting:
                     break;
-
             }
         }
     }

@@ -22,7 +22,7 @@ namespace Asset.Script.Player
 
         private void Update()
         {
-            if (GameManager.Instance.IsPaused)
+            if (GameManager.Instance == null || GameManager.Instance.IsPaused)
             {
                 return; 
             }

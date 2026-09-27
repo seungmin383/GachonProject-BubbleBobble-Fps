@@ -11,6 +11,9 @@ namespace Asset.Script.Component
         private Bubble _bubble;
         private Rigidbody _rigidBody;
 
+        private bool _wasKinematic;
+
+        public event Action Escaped;
         public event Action Captured;
         public event Action BubbleBurst;
 
@@ -32,6 +35,18 @@ namespace Asset.Script.Component
             BubbleBurst?.Invoke();
         }
 
+        public void Escape()
+        {
+            if (_bubble == null)
+                return;
+
+            _bubble = null;
+            if (_rigidBody != null)
+                _rigidBody.isKinematic = _wasKinematic;
+
+            Escaped?.Invoke();
+        }
+
         public bool TryCapture(Bubble bubble)
         {
             if (bubble == null || _bubble != null)
@@ -43,6 +58,7 @@ namespace Asset.Script.Component
 
             if (_rigidBody != null)
             {
+                _wasKinematic = _rigidBody.isKinematic;
                 _rigidBody.isKinematic = true;
             }
 

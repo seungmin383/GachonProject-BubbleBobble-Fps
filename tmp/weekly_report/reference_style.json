@@ -1,0 +1,79 @@
+{
+  "input": "C:\\Users\\jinug\\Desktop\\SEUNGMIN_BAEK\\Unity_Projects\\BubbleBobble-Fps\\tmp\\weekly_report\\reference.docx",
+  "fonts_by_char_count": {
+    "Gulim": 118,
+    "NanumGothic": 47
+  },
+  "direct_run_formatting_runs": 81,
+  "direct_paragraph_formatting_paragraphs": 0,
+  "heading_like_paragraphs_not_heading_style": [
+    {
+      "para_index": 6,
+      "text": "\ud504\ub85c\uc81d\ud2b8 \uc8fc\uac04 \ubcf4\uace0",
+      "style": "\ubc14\ud0d5\uae00"
+    },
+    {
+      "para_index": 8,
+      "text": "09",
+      "style": "\ubc14\ud0d5\uae00"
+    },
+    {
+      "para_index": 10,
+      "text": "20",
+      "style": "\ubc14\ud0d5\uae00"
+    },
+    {
+      "para_index": 12,
+      "text": "\ud504\ub85c\uc81d\ud2b8 \uc8fc\uac04 \ubcf4\uace0",
+      "style": "\ubc14\ud0d5\uae00"
+    },
+    {
+      "para_index": 14,
+      "text": "\uc720\uc815\uc740",
+      "style": "\ubc14\ud0d5\uae00"
+    },
+    {
+      "para_index": 15,
+      "text": "\uc720\uc815\uc740",
+      "style": "\ubc14\ud0d5\uae00"
+    },
+    {
+      "para_index": 17,
+      "text": "202450089",
+      "style": "\ubc14\ud0d5\uae00"
+    }
+  ],
+  "examples": {
+    "direct_run_formatting": [
+      {
+        "para_index": 6,
+        "run_text": "\ud504\ub85c\uc81d\ud2b8",
+        "style": "\ubc14\ud0d5\uae00"
+      },
+      {
+        "para_index": 6,
+        "run_text": " ",
+        "style": "\ubc14\ud0d5\uae00"
+      },
+      {
+        "para_index": 6,
+        "run_text": "\uc8fc\uac04",
+        "style": "\ubc14\ud0d5\uae00"
+      },
+      {
+        "para_index": 6,
+        "run_text": " ",
+        "style": "\ubc14\ud0d5\uae00"
+      },
+      {
+        "para_index": 6,
+        "run_text": "\ubcf4\uace0",
+        "style": "\ubc14\ud0d5\uae00"
+      }
+    ]
+  },
+  "notes": [
+    "Direct formatting is not always wrong, but it often causes inconsistent output when templates change.",
+    "Heading-like paragraphs not using Heading styles can break TOC and accessibility."
+  ]
+}

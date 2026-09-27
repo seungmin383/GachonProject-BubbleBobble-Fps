@@ -4,10 +4,11 @@ public abstract class MonsterBase : MonoBehaviour
 {
     protected enum MonsterState
     {
-        Idle, Chase, Attack, Captured, Dead
+        Idle, Chase, Attack, Captured, Dead, Angry
     }
 
     protected MonsterState _currentState = MonsterState.Idle;
+    public bool IsAngry { get; protected set; }
 
     protected virtual void Update()
     {
@@ -26,6 +27,10 @@ public abstract class MonsterBase : MonoBehaviour
                 Chase();
                 break;
 
+            case MonsterState.Angry:
+                Angry();
+                break;
+
             case MonsterState.Attack:
                 Attack();
                 break;
@@ -41,6 +46,7 @@ public abstract class MonsterBase : MonoBehaviour
 
     protected virtual void Idle() { }
     protected virtual void Chase() { }
+    protected virtual void Angry() { }
     protected virtual void Attack() { }
     protected virtual void Captured() { }
 
@@ -48,7 +54,7 @@ public abstract class MonsterBase : MonoBehaviour
     {
         _currentState = MonsterState.Dead;
 
-        // ÃßÈÄ pool ¹ÝÈ¯
+        // ì¶”í›„ pool ë°˜í™˜
         Destroy(gameObject);
     }
 }

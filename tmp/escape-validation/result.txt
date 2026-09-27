@@ -1,0 +1,1 @@
+PASS: 10s expiry, 5s angry recapture, repeated 2x speed, attack return, physics restore, empty expiry, Pop only kill, pause, accelerating per-bubble blink with alpha preserved.

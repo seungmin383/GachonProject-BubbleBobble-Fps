@@ -9,10 +9,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7240621237427928513}
+  - component: {fileID: 743633497474189833}
+  - component: {fileID: 743633497474189834}
   - component: {fileID: 1724254685062400225}
   - component: {fileID: 2298735810720780866}
   - component: {fileID: 2245958955298691393}
-  - component: {fileID: 743633497474189833}
   m_Layer: 0
   m_Name: Bubble
   m_TagString: Untagged
@@ -35,6 +36,39 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &743633497474189833
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5804501009490405347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d3592b2e897bbe4da5f8305608c936c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Bubble
+  _lifeTime: 10
+  _angryLifeTime: 5
+  _speed: 30
+  _floatingSpeed: 3
+  _timeToFloating: 0.5
+  _floatingTransitionTime: 1
+--- !u!114 &743633497474189834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5804501009490405347}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1c1097638104a30ba9315800344654b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Asset.Script.Weapon.BubbleWarning
+  _colorProperty: _BaseColor
+  _slowInterval: 0.5
+  _fastInterval: 0.1
 --- !u!33 &1724254685062400225
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -113,20 +147,3 @@ SphereCollider:
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &743633497474189833
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5804501009490405347}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7d3592b2e897bbe4da5f8305608c936c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Bubble
-  _speed: 30
-  _floatingSpeed: 3
-  _lifeTime: 10
-  _timeToFloating: 0.5
-  _floatingTransitionTime: 1

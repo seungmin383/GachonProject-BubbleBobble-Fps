@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profile>
+ <version>LibreOffice v1</version>
+ <device>
+  <type>opencl</type>
+  <name>Intel(R) RaptorLake-S Mobile Graphics Controller</name>
+  <driver>32.0.101.6078</driver>
+  <time>max</time>
+  <errors>false</errors>
+ </device>
+ <device>
+  <type>opencl</type>
+  <name>NVIDIA GeForce RTX 5060 Laptop GPU</name>
+  <driver>591.44</driver>
+  <time>16325</time>
+  <errors>false</errors>
+ </device>
+ <device>
+  <type>native</type>
+  <time>2233344</time>
+  <errors>false</errors>
+ </device>
+</profile>

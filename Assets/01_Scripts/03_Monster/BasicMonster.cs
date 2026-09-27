@@ -23,6 +23,8 @@ namespace Asset.Script.Monster
         private int _attackDamage = 1;
         [SerializeField]
         private float _attackInterval = 5.0f;
+        [SerializeField]
+        private float _angrySpeedMagnification = 2.0f;
 
         private float _attackElapsedTime;
 
@@ -39,11 +41,15 @@ namespace Asset.Script.Monster
         {
             _capturable.Captured += OnCaptured;
             _capturable.BubbleBurst += OnBubbleBurst;
+
+            _capturable.Escaped += OnEscaped;
         }
         private void OnDisable()
         {
             _capturable.Captured -= OnCaptured;
             _capturable.BubbleBurst -= OnBubbleBurst;
+
+            _capturable.Escaped -= OnEscaped;
         }
 
         protected override void Idle()
@@ -52,14 +58,17 @@ namespace Asset.Script.Monster
         }
         protected override void Chase() 
         {
-            LookAtTarget();
-            transform.position += transform.forward * _moveSpeed * Time.deltaTime;
+            MoveToTarget(_moveSpeed);
+        }
+
+        protected override void Angry()
+        {
+            MoveToTarget(_moveSpeed * _angrySpeedMagnification);
         }
 
         protected override void Attack() 
         {
             LookAtTarget();
-
 
             if( _attackElapsedTime < _attackInterval )
             {
@@ -87,6 +96,12 @@ namespace Asset.Script.Monster
             Die();
         }
 
+        private void OnEscaped()
+        {
+            IsAngry = true;
+            _currentState = MonsterState.Angry;
+        }
+
         private void UpdateState()
         {
             if(_currentState == MonsterState.Captured || _currentState == MonsterState.Dead)
@@ -102,7 +117,7 @@ namespace Asset.Script.Monster
             }
             else
             {
-                _currentState = MonsterState.Chase;
+                _currentState = IsAngry ? MonsterState.Angry : MonsterState.Chase;
             }
         }
 
@@ -114,6 +129,12 @@ namespace Asset.Script.Monster
                 return;
             direction.Normalize();
             transform.forward = direction;
+        }
+
+        private void MoveToTarget(float speed)
+        {
+            LookAtTarget();
+            transform.position += transform.forward * speed * Time.deltaTime;
         }
     }
 }
