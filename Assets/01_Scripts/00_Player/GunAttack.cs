@@ -10,10 +10,6 @@ namespace Asset.Script.Player
         [SerializeField]
         private float _range = 100.0f;
 
-        private void Awake()
-        {
-        }
-
         public void Attack()
         {
             Ray ray = new Ray(_aimCamera.transform.position, _aimCamera.transform.forward);

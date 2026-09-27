@@ -1,5 +1,6 @@
 using UnityEngine;
 using Asset.Script.Interfaces;
+using System.Collections;
 
 namespace Asset.Script.Weapon
 {
@@ -17,6 +18,10 @@ namespace Asset.Script.Weapon
         private float _timeToFloating = 3.0f;
         [SerializeField]
         private float _floatingTransitionTime = 1.0f;
+        [SerializeField]
+        private float _chainRadius = 2.0f;
+        [SerializeField]
+        private float _delayTime = 0.1f;
 
         private ICapturable _capturable;
 
@@ -28,6 +33,7 @@ namespace Asset.Script.Weapon
         private float _floatingElapsedTime;
 
         private bool _isBurst;
+        private bool _burstScheduled;
 
         private enum State
         {
@@ -120,6 +126,8 @@ namespace Asset.Script.Weapon
             else
             {
                 _capturable?.OnBubbleBurst();
+
+                BurstNearbyBubbles();
             }
 
             _capturable = null;
@@ -149,6 +157,38 @@ namespace Asset.Script.Weapon
                 case State.Bursting:
                     break;
             }
+        }
+
+        private void BurstNearbyBubbles()
+        {
+            Collider[] hits = Physics.OverlapSphere(transform.position, _chainRadius, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide);
+
+            foreach (Collider hit in hits)
+            {
+                if(hit.TryGetComponent<Bubble>(out var bubble) && bubble != null)
+                {
+                    bubble.ScheduleBurst(_delayTime);
+                }
+            }
+        }
+
+        public void ScheduleBurst(float delay)
+        {
+            if (_isBurst || _burstScheduled)
+            {
+                return;
+            }
+
+            _burstScheduled = true;
+
+            StartCoroutine(BurstDelayed(delay));
+        }
+
+        /* GPT-연쇄 폭발 사이에 짧은 간격을 두어 전파 과정을 볼 수 있게 한다. */
+        private IEnumerator BurstDelayed(float delay)
+        {
+            yield return new WaitForSeconds(delay);
+            Burst();
         }
     }
 }
