@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 492525072331559104}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Bubble_Gun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1418937561524655049}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Fire_Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,7 @@ GameObject:
   - component: {fileID: 7224544327924870617}
   - component: {fileID: 1989296839240880492}
   - component: {fileID: 1051536264453820935}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Gun_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}

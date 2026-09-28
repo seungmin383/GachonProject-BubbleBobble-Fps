@@ -19,7 +19,9 @@ namespace Asset.Script.Player
 #endif
             if (Physics.Raycast(ray, out RaycastHit hit, _range, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Collide))
             {
-                if (hit.collider.TryGetComponent<Bubble>(out var bubble))
+                Bubble bubble = hit.collider.GetComponentInParent<Bubble>();
+
+                if (bubble != null)
                 {
                     bubble.Burst();
                 }

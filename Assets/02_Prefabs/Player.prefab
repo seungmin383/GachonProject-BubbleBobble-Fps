@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3845188538682980664}
   - component: {fileID: 2744689334697613186}
   - component: {fileID: 4517067255410029992}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Left_Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -124,7 +124,7 @@ GameObject:
   - component: {fileID: 8969132810135537928}
   - component: {fileID: 4571542577190512686}
   - component: {fileID: 528957047206724618}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: PlayerEye_Camera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -261,7 +261,7 @@ GameObject:
   - component: {fileID: 874416488541895918}
   - component: {fileID: 3917668205838784313}
   - component: {fileID: 7246087628309412349}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -352,7 +352,7 @@ GameObject:
   - component: {fileID: 6540431841693086866}
   - component: {fileID: 5203999659390999477}
   - component: {fileID: 4448720349576348951}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Right_Arm
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -465,7 +465,7 @@ GameObject:
   - component: {fileID: 4643932582391347241}
   - component: {fileID: 4606739426323866398}
   - component: {fileID: 1365991328795870887}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Face
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 3813412132178936713}
   - component: {fileID: 3942868301796827933}
   - component: {fileID: 7426108498848841142}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +696,7 @@ GameObject:
   - component: {fileID: 708599468073295171}
   - component: {fileID: -7282970950246348657}
   - component: {fileID: 5548600841924338093}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +849,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9163649346032632840}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Gun_Position
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -881,7 +881,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7975722476131544734}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: VIewModel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
