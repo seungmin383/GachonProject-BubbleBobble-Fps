@@ -12,7 +12,8 @@ namespace Asset.Script.Manager
         {
             _instance = null;
             InputManager.Release();
-            Time.timeScale = 1.0f;
+
+            PauseService.Reset();
         }
 
         /* 첫 씬의 Awake보다 먼저 지속되는 시스템 객체를 만들어 시작 씬에 따른 초기화 차이를 없앤다. */
@@ -56,7 +57,7 @@ namespace Asset.Script.Manager
             }
 
             InputManager.Release();
-            Time.timeScale = 1.0f;
+            PauseService.Reset();
             CursorManager.Unlock();
             _instance = null;
         }

@@ -676,6 +676,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1456066735}
+  - component: {fileID: 1456066736}
   m_Layer: 0
   m_Name: Environment
   m_TagString: Untagged
@@ -698,6 +699,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1456066736
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1456066734}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b059fd888c8d4a08a280e7d1a84b17c6, type: 3}
+  m_Name:
+  m_EditorClassIdentifier: Assembly-CSharp::Asset.Script.Manager.BattleSceneContext
 --- !u!1001 &1531871216
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1016,7 +1029,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: feb458023fa44b74990a8a16115c0bbb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Asset.Script.UI.PlayerHealthUI
-  _playerHealth: {fileID: 1538636378}
   _hpIconPoints:
   - {fileID: 1763412621}
   - {fileID: 1582933874}
@@ -1567,10 +1579,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2401892295484765336, guid: e390aa1d0f7061648a59ff4191703a36, type: 3}
-      propertyPath: _target
-      value: 
-      objectReference: {fileID: 1052540555}
     - target: {fileID: 2401892295484765336, guid: e390aa1d0f7061648a59ff4191703a36, type: 3}
       propertyPath: _attackInterval
       value: 3

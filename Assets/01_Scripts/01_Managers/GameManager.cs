@@ -1,4 +1,3 @@
-using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Asset.Script.ClientDefine;
@@ -13,12 +12,7 @@ namespace Asset.Script.Manager
         }
 
         public static GameManager Instance { get; private set; }
-
-        public event Action<bool> PauseEvent;
-
-        private bool _isPaused;
-        public bool IsPaused => _isPaused;
-
+        
         private GameState _currentState;
         public GameState CurrentState => _currentState;
 
@@ -59,28 +53,12 @@ namespace Asset.Script.Manager
                     SceneManager.LoadScene(SceneNames.Loading);
                 }
             }   
-            
-            if(_currentState == GameState.Playing)
-            {
-                if(InputManager.PressedPause)
-                {
-                    if(_isPaused )
-                    {
-                        Resume();
-                    }
-                    else
-                    {
-                        Pause();
-                    }
-                }
-            }
         }
 
         private void OnEnable()
         {
             SceneManager.sceneLoaded += OnSceneLoaded;
         }
-
         private void OnDisable()
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -96,25 +74,7 @@ namespace Asset.Script.Manager
             _currentState = nextState;
         }
 
-        private void Pause()
-        {
-            Time.timeScale = 0.0f;
-            _isPaused = true;
-
-            CursorManager.Unlock();
-
-            PauseEvent?.Invoke(true);
-        }
-
-        private void Resume()
-        {
-            Time.timeScale = 1.0f;
-            _isPaused = false;
-
-            CursorManager.Lock();
-
-            PauseEvent?.Invoke(false);
-        }
+        public void BeginBattle() => ChangeState(GameState.Playing);
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
@@ -123,24 +83,13 @@ namespace Asset.Script.Manager
                 return;
             }
 
-            bool wasPaused = _isPaused;
-            _isPaused = false;
-            Time.timeScale = 1.0f;
-
-            if (scene.name == SceneNames.Battle)
+            if (BattleSceneContext.Current != null && BattleSceneContext.Current.gameObject.scene == scene)
             {
-                ChangeState(GameState.Playing);
-                CursorManager.Lock();
+                BeginBattle();
             }
             else
             {
                 ChangeState(scene.name == SceneNames.Loading ? GameState.Loading : GameState.WaitingForStart);
-                CursorManager.Unlock();
-            }
-
-            if (wasPaused)
-            {
-                PauseEvent?.Invoke(false);
             }
         }
 

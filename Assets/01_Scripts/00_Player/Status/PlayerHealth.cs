@@ -20,6 +20,7 @@ namespace Asset.Script.Player
         private void Awake()
         {
             _currentHealth = _maxHealth;
+            HealthChanged?.Invoke(_currentHealth, _maxHealth);
         }
 
         private void Update()
@@ -40,7 +41,7 @@ namespace Asset.Script.Player
 
         private void Die()
         {
-            // °ÔÀÓ¿À¹ö Ãß°¡
+            // ê²Œìž„ì˜¤ë²„ ì¶”ê°€
         }
     }
 

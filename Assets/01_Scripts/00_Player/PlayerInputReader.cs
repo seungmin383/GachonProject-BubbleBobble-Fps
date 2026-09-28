@@ -7,41 +7,73 @@ namespace Asset.Script.Player
     {
         private PlayerInputAction _inputAction;
 
-        /* ÀÔ·Â ¾øÀ½ ¡æ ( 0, 0)
-            W        ¡æ ( 0, 1)
-            S        ¡æ ( 0,-1)
-            A        ¡æ (-1, 0)
-            D        ¡æ ( 1, 0) */
-        public Vector2 CurrentInput => _inputAction.Player.Move.ReadValue<Vector2>();
-        public bool PressedJump => _inputAction.Player.Jump.WasPressedThisFrame();
+        private bool _gameplayInputEnabled = true;
+        public bool GameplayInputEnabled => isActiveAndEnabled && _gameplayInputEnabled && _inputAction != null && _inputAction.Player.enabled;
 
-        /* ¸¶¿ì½º ¿À¸¥ÂÊ ÀÌµ¿ ¡æ (¾ç¼ö, 0)
-           ¸¶¿ì½º ¿ÞÂÊ ÀÌµ¿   ¡æ (À½¼ö, 0)
-           ¸¶¿ì½º À§ ÀÌµ¿     ¡æ (0, ¾ç¼ö)
-           ¸¶¿ì½º ¾Æ·¡ ÀÌµ¿   ¡æ (0, À½¼ö)*/
-        public Vector2 CurrentLook => _inputAction.Player.Look.ReadValue<Vector2>();
+        /* ìž…ë ¥ ì—†ìŒ â†’ ( 0, 0)
+            W        â†’ ( 0, 1)
+            S        â†’ ( 0,-1)
+            A        â†’ (-1, 0)
+            D        â†’ ( 1, 0) */
+        public Vector2 CurrentInput => GameplayInputEnabled ? _inputAction.Player.Move.ReadValue<Vector2>() : Vector2.zero;
+        public bool PressedJump => GameplayInputEnabled && _inputAction.Player.Jump.WasPressedThisFrame();
 
-        public bool LeftMouseInput => _inputAction.Player.LeftMouseInput.IsPressed();
-        public bool RightMouseInput => _inputAction.Player.RightMouseInput.WasPressedThisFrame();
+        /* ë§ˆìš°ìŠ¤ ì˜¤ë¥¸ìª½ ì´ë™ â†’ (ì–‘ìˆ˜, 0)
+           ë§ˆìš°ìŠ¤ ì™¼ìª½ ì´ë™   â†’ (ìŒìˆ˜, 0)
+           ë§ˆìš°ìŠ¤ ìœ„ ì´ë™     â†’ (0, ì–‘ìˆ˜)
+           ë§ˆìš°ìŠ¤ ì•„ëž˜ ì´ë™   â†’ (0, ìŒìˆ˜)*/
+        public Vector2 CurrentLook => GameplayInputEnabled ? _inputAction.Player.Look.ReadValue<Vector2>() : Vector2.zero;
+
+        public bool LeftMouseInput => GameplayInputEnabled && _inputAction.Player.LeftMouseInput.IsPressed();
+        public bool RightMouseInput => GameplayInputEnabled && _inputAction.Player.RightMouseInput.WasPressedThisFrame();
 
         private void Awake()
         {
-            _inputAction = new PlayerInputAction();
+            EnsureInitialized();
         }
 
         private void OnEnable()
         {
-            _inputAction.Player.Enable();
+            EnsureInitialized();
+            ApplyInputState();
         }
 
         private void OnDisable()
         {
-            _inputAction.Player.Disable();
+            _inputAction?.Player.Disable();
+        }
+
+        public void SetGameplayInputEnabled(bool isEnabled)
+        {
+            _gameplayInputEnabled = isEnabled;
+            EnsureInitialized();
+            ApplyInputState();
+        }
+
+        private void EnsureInitialized()
+        {
+            if (_inputAction == null)
+            {
+                _inputAction = new PlayerInputAction();
+            }
+        }
+
+        private void ApplyInputState()
+        {
+            if (isActiveAndEnabled && _gameplayInputEnabled)
+            {
+                _inputAction.Player.Enable();
+            }
+            else
+            {
+                _inputAction.Player.Disable();
+            }
         }
 
         private void OnDestroy()
         {
             _inputAction?.Dispose();
+            _inputAction = null;
         }
     }
 

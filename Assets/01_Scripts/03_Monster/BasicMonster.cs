@@ -1,20 +1,18 @@
 using Asset.Script.Component;
-using Asset.Script.Interfaces;
+using Asset.Script.Manager;
 using Asset.Script.Player;
-using Asset.Script.Weapon;
-using Unity.VisualScripting;
 using UnityEngine;
 
 namespace Asset.Script.Monster
 {
-
+    [RequireComponent(typeof(Capturable))]
     public class BasicMonster : MonsterBase
     {
         [SerializeField]
         private Capturable _capturable;
 
-        [SerializeField]
         private Transform _target;
+        private PlayerHealth _targetHealth;
         [SerializeField]
         private float _moveSpeed = 3.0f;
         [SerializeField]
@@ -28,9 +26,21 @@ namespace Asset.Script.Monster
 
         private float _attackElapsedTime;
 
+        private void Awake()
+        {
+            if (_capturable == null)
+            {
+                _capturable = GetComponent<Capturable>();
+            }
+        }
 
         protected override void Update()
         {
+            if (PauseService.IsPaused)
+            {
+                return;
+            }
+
             _attackElapsedTime += Time.deltaTime;
             UpdateState();
 
@@ -43,17 +53,33 @@ namespace Asset.Script.Monster
             _capturable.BubbleBurst += OnBubbleBurst;
 
             _capturable.Escaped += OnEscaped;
+
+            PlayerRegistry.PlayerChanged += BindPlayer;
+            BindPlayer(PlayerRegistry.CurrentPlayerController);
         }
         private void OnDisable()
         {
-            _capturable.Captured -= OnCaptured;
-            _capturable.BubbleBurst -= OnBubbleBurst;
+            if (_capturable != null)
+            {
+                _capturable.Captured -= OnCaptured;
+                _capturable.BubbleBurst -= OnBubbleBurst;
+                _capturable.Escaped -= OnEscaped;
+            }
 
-            _capturable.Escaped -= OnEscaped;
+            PlayerRegistry.PlayerChanged -= BindPlayer;
+            BindPlayer(null);
+        }
+
+        private void BindPlayer(PlayerController controller)
+        {
+            _target         = controller != null ? controller.transform : null;
+            _targetHealth   = controller != null ? controller.Health : null;
+            UpdateState();
         }
 
         protected override void Idle()
         {
+
 
         }
         protected override void Chase() 
@@ -68,6 +94,11 @@ namespace Asset.Script.Monster
 
         protected override void Attack() 
         {
+            if (_target == null || _targetHealth == null)
+            {
+                return;
+            }
+
             LookAtTarget();
 
             if( _attackElapsedTime < _attackInterval )
@@ -77,10 +108,7 @@ namespace Asset.Script.Monster
 
             _attackElapsedTime = 0.0f;
 
-            if(_target.TryGetComponent<PlayerHealth>(out PlayerHealth health))
-            {
-                health.TakeDamage(_attackDamage);
-            }
+            _targetHealth.TakeDamage(_attackDamage);
         }
         protected override void Captured() 
         {
@@ -106,6 +134,12 @@ namespace Asset.Script.Monster
         {
             if(_currentState == MonsterState.Captured || _currentState == MonsterState.Dead)
             {
+                return;
+            }
+
+            if (_target == null || _targetHealth == null)
+            {
+                _currentState = MonsterState.Idle;
                 return;
             }
 

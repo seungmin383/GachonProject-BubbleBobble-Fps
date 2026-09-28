@@ -5,26 +5,53 @@ namespace Asset.Script.UI
 {
     public class PlayerHealthUI : MonoBehaviour
     {
-        [SerializeField] 
         private PlayerHealth _playerHealth;
         [SerializeField] 
         private GameObject[] _hpIconPoints;
 
         private void OnEnable()
         {
-            _playerHealth.HealthChanged += Refresh;
-            Refresh(_playerHealth.CurrentHealth, _playerHealth.MaxHealth);
+            PlayerRegistry.PlayerChanged += BindPlayer;
+            BindPlayer(PlayerRegistry.CurrentPlayerController);
         }
         private void OnDisable()
         {
-            _playerHealth.HealthChanged -= Refresh;
+            PlayerRegistry.PlayerChanged -= BindPlayer;
+            BindPlayer(null);
+        }
+
+        private void BindPlayer(PlayerController player)
+        {
+            if (_playerHealth != null)
+            {
+                _playerHealth.HealthChanged -= Refresh;
+            }
+
+            _playerHealth = player != null ? player.Health : null;
+            if (_playerHealth != null)
+            {
+                _playerHealth.HealthChanged += Refresh;
+                Refresh(_playerHealth.CurrentHealth, _playerHealth.MaxHealth);
+            }
+            else
+            {
+                Refresh(0, 0);
+            }
         }
 
         private void Refresh(int currentHealth, int maxHealth)
         {
+            if (_hpIconPoints == null)
+            {
+                return;
+            }
+
             for (int i = 0; i < _hpIconPoints.Length; i++)
             {
-                _hpIconPoints[i].SetActive(i < currentHealth);
+                if (_hpIconPoints[i] != null)
+                {
+                    _hpIconPoints[i].SetActive(i < currentHealth);
+                }
             }
         }
     }
