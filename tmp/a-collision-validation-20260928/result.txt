@@ -1,0 +1,1 @@
+PASS 8 checks: high-speed scaled wall hit, floor hit, ceiling stop, physical push and resume, wall spawn overlap, ceiling spawn overlap, flying pass-through, floating push.

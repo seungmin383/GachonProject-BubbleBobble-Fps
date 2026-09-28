@@ -34,6 +34,7 @@ namespace Asset.Script.Weapon
 
         [SerializeField] 
         private SphereCollider _bodyCollider;
+        /* GPT-비행 경로에서는 벽, 바닥, 천장만 검사하고 버블과 포획 대상은 기존 충돌 규칙으로 처리한다. */
         [SerializeField]
         private LayerMask _environmentLayers;
 
@@ -80,6 +81,7 @@ namespace Asset.Script.Weapon
                 return;
             }
 
+            /* GPT-기존 버블 인스턴스에도 현재 맵의 Default와 Wall 레이어를 환경 검사 대상으로 적용한다. */
             if (_environmentLayers.value == 0)
             {
                 _environmentLayers = LayerMask.GetMask("Default", "Wall");
@@ -103,6 +105,7 @@ namespace Asset.Script.Weapon
 
             if (_motionState == MotionState.Flying)
             {
+                /* GPT-비행 이동 전에 환경 접촉을 검사해 Kinematic 버블이 벽과 천장을 통과하지 않게 한다. */
                 MoveFlying();
             }
             else if (_motionState == MotionState.Floating)

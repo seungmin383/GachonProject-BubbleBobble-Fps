@@ -62,6 +62,9 @@ MonoBehaviour:
   _ceilingPushImpulse: 1.5
   _floatingSteering: 3
   _bodyCollider: {fileID: 8010000000000000004}
+  _environmentLayers:
+    serializedVersion: 2
+    m_Bits: 65
 --- !u!114 &743633497474189834
 MonoBehaviour:
   m_ObjectHideFlags: 0
