@@ -24,6 +24,12 @@ namespace Asset.Script.Manager
 
         private int _currentCoin;
 
+        [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
+        private static void ResetInstance()
+        {
+            Instance = null;
+        }
+
         private void Awake()
         {
             if (null != Instance && this != Instance)
@@ -36,8 +42,6 @@ namespace Asset.Script.Manager
             Instance = this;
             _currentState = GameState.WaitingForStart;
             DontDestroyOnLoad(gameObject);
-
-            InputManager.Initialize();
         }
 
         private void Update()
@@ -114,10 +118,29 @@ namespace Asset.Script.Manager
 
         private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
         {
+            if (mode == LoadSceneMode.Additive)
+            {
+                return;
+            }
+
+            bool wasPaused = _isPaused;
+            _isPaused = false;
+            Time.timeScale = 1.0f;
+
             if (scene.name == SceneNames.Battle)
             {
                 ChangeState(GameState.Playing);
                 CursorManager.Lock();
+            }
+            else
+            {
+                ChangeState(scene.name == SceneNames.Loading ? GameState.Loading : GameState.WaitingForStart);
+                CursorManager.Unlock();
+            }
+
+            if (wasPaused)
+            {
+                PauseEvent?.Invoke(false);
             }
         }
 
@@ -128,7 +151,6 @@ namespace Asset.Script.Manager
                 return;
             }
 
-            InputManager.Release();
             Instance = null;
         }
     }
